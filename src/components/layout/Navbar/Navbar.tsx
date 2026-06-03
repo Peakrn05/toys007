@@ -40,7 +40,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [cartCount] = useState(3);
+  const [cartCount] = useState(10);
 
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
