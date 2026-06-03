@@ -11,6 +11,7 @@ import {
   User,
   Heart,
 } from "lucide-react";
+import { useCart } from "@/context/cart/CartContext";
 
 const NAV_LINKS = [
   {
@@ -40,7 +41,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [cartCount] = useState(10);
+  const { cartCount } = useCart();
 
   return (
     <header className="w-full bg-white shadow-sm sticky top-0 z-50">
@@ -100,7 +101,9 @@ export default function Navbar() {
                   <span className="absolute -top-2 -right-2 bg-brand-red text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
                     {cartCount}
                   </span>
-                )}
+                )
+
+                }
               </div>
               <span className="text-xs mt-0.5">Cart</span>
             </Link>

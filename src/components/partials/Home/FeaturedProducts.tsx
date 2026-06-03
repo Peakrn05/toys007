@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ShoppingCart, Heart, Star } from "lucide-react";
 import { FEATURED_PRODUCTS, AGE_FILTERS } from "./Home.config";
+import { useCart } from "@/context/cart/CartContext";
 import type { Product } from "@/types/app/product";
 
 const BADGE_STYLES: Record<NonNullable<Product["badge"]>, string> = {
@@ -24,7 +25,7 @@ interface ProductCardProps {
 
 function ProductCard({ product }: ProductCardProps) {
   const [wishlisted, setWishlisted] = useState(false);
-  const [cartCount, setCartCount] = useState(false);
+  const { addToCart } = useCart();
   const discount =
     product.originalPrice
       ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -123,7 +124,7 @@ function ProductCard({ product }: ProductCardProps) {
 
         {/* Add to cart */}
         <button
-         
+          onClick={() => addToCart(product.id)}
           disabled={!product.inStock}
           className="w-full flex items-center justify-center gap-2 bg-brand-red text-white text-sm font-semibold py-2.5 rounded-lg hover:bg-brand-red-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed mt-1"
         >

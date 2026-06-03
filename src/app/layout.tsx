@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import QueryProvider from "@/context/query/QueryProvider";
+import { CartProvider } from "@/context/cart/CartContext";
 
 export const metadata: Metadata = {
   title: "ToysWorld - The Best Toy Store",
@@ -16,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="th">
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <CartProvider>{children}</CartProvider>
+        </QueryProvider>
       </body>
     </html>
   );
