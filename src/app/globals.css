@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -15,6 +17,7 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -22,24 +25,46 @@ a {
   text-decoration: none;
 }
 
+/* Hide scrollbar everywhere */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
 @layer components {
+  /* Buttons */
   .btn-primary {
-    @apply bg-brand-red text-white font-semibold px-6 py-3 rounded-lg hover:bg-brand-red-dark transition-colors duration-200;
+    @apply inline-flex items-center justify-center bg-brand-red text-white font-bold px-6 py-3 rounded-xl hover:bg-brand-red-dark active:scale-95 transition-all duration-150 shadow-sm;
   }
-
   .btn-secondary {
-    @apply bg-brand-blue text-white font-semibold px-6 py-3 rounded-lg hover:bg-brand-blue-dark transition-colors duration-200;
+    @apply inline-flex items-center justify-center bg-brand-blue text-white font-bold px-6 py-3 rounded-xl hover:bg-brand-blue-dark active:scale-95 transition-all duration-150 shadow-sm;
   }
-
   .btn-outline {
-    @apply border-2 border-brand-red text-brand-red font-semibold px-6 py-3 rounded-lg hover:bg-brand-red hover:text-white transition-colors duration-200;
+    @apply inline-flex items-center justify-center border-2 border-brand-red text-brand-red font-bold px-6 py-3 rounded-xl hover:bg-brand-red hover:text-white active:scale-95 transition-all duration-150;
   }
 
+  /* Cards */
   .product-card {
-    @apply bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200;
+    @apply bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200;
   }
 
+  /* Section headings */
+  .section-eyebrow {
+    @apply text-brand-red font-bold text-xs uppercase tracking-widest mb-1;
+  }
   .section-title {
-    @apply text-2xl font-bold text-gray-900;
+    @apply text-3xl font-black text-gray-900 leading-tight;
+  }
+
+  /* Page header used by Deals/Outdoor/Category */
+  .page-banner {
+    @apply py-14 px-4;
+  }
+  .page-banner-back {
+    @apply inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-semibold mb-6 transition-colors;
+  }
+  .page-banner-title {
+    @apply text-3xl md:text-4xl font-black text-white;
+  }
+  .page-banner-subtitle {
+    @apply text-white/80 text-sm mt-1 font-medium;
   }
 }

@@ -9,6 +9,7 @@ export interface Product {
   rating: number;
   reviewCount: number;
   inStock: boolean;
+  ageGroup: "0-2" | "3-5" | "6+";
 }
 
 export interface Category {

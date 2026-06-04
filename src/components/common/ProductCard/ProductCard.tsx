@@ -24,8 +24,8 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { toggleWishlist, isWishlisted } = useWishlist();
-
   const wishlisted = isWishlisted(product.id);
+
   const discount = product.originalPrice
     ? Math.round(
         ((product.originalPrice - product.price) / product.originalPrice) * 100
@@ -33,20 +33,21 @@ export default function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-200 group">
-      {/* Image */}
+    <div className="product-card flex flex-col group">
+      {/* ── Image ── */}
       <div className="relative overflow-hidden bg-gray-50 aspect-square">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
         />
 
         {/* Badge */}
         {product.badge && (
           <span
-            className={`absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded-full ${BADGE_STYLES[product.badge]}`}
+            className={`absolute top-2.5 left-2.5 text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider ${BADGE_STYLES[product.badge]}`}
           >
             {BADGE_LABELS[product.badge]}
           </span>
@@ -54,7 +55,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Discount */}
         {discount > 0 && (
-          <span className="absolute top-3 right-10 bg-brand-orange text-white text-xs font-bold px-2 py-1 rounded-full">
+          <span className="absolute top-2.5 right-10 bg-brand-orange text-white text-[10px] font-black px-2 py-0.5 rounded-full">
             -{discount}%
           </span>
         )}
@@ -62,13 +63,13 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Wishlist */}
         <button
           onClick={() => toggleWishlist(product.id)}
-          className={`absolute bottom-3 right-3 w-9 h-9 rounded-full shadow-md flex items-center justify-center hover:scale-110 transition-all duration-150 ${
+          className={`absolute top-2.5 right-2.5 w-8 h-8 rounded-full shadow flex items-center justify-center transition-all duration-150 hover:scale-110 ${
             wishlisted ? "bg-brand-red" : "bg-white"
           }`}
           aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
           <Heart
-            size={15}
+            size={14}
             className={wishlisted ? "fill-white text-white" : "text-gray-400"}
           />
         </button>
@@ -83,55 +84,55 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
 
-      {/* Info */}
-      <div className="p-4 space-y-2">
-        <p className="text-xs text-brand-orange font-bold uppercase tracking-wide">
+      {/* ── Info ── */}
+      <div className="p-3.5 flex flex-col flex-1 gap-1.5">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-brand-orange">
           {product.category}
         </p>
 
-        <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 leading-snug">
+        <h3 className="text-xs font-bold text-gray-900 line-clamp-2 leading-snug flex-1">
           {product.name}
         </h3>
 
-        {/* Rating */}
-        <div className="flex items-center gap-1.5">
+        {/* Stars */}
+        <div className="flex items-center gap-1">
           <div className="flex">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
                 key={i}
-                size={12}
+                size={10}
                 className={
                   i < Math.floor(product.rating)
                     ? "fill-brand-yellow text-brand-yellow"
-                    : "text-gray-200 fill-gray-200"
+                    : "fill-gray-200 text-gray-200"
                 }
               />
             ))}
           </div>
-          <span className="text-xs text-gray-500">
-            {product.rating} ({product.reviewCount.toLocaleString()})
+          <span className="text-[10px] text-gray-400">
+            ({product.reviewCount.toLocaleString()})
           </span>
         </div>
 
         {/* Price */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-lg font-black text-gray-900">
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-base font-black text-gray-900">
             ${product.price.toFixed(2)}
           </span>
           {product.originalPrice && (
-            <span className="text-sm text-gray-400 line-through">
+            <span className="text-xs text-gray-400 line-through">
               ${product.originalPrice.toFixed(2)}
             </span>
           )}
         </div>
 
-        {/* Add to cart */}
+        {/* Cart button */}
         <button
           onClick={() => addToCart(product.id)}
           disabled={!product.inStock}
-          className="w-full flex items-center justify-center gap-2 bg-brand-red text-white text-sm font-bold py-2.5 rounded-xl hover:bg-brand-red-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed mt-1"
+          className="w-full flex items-center justify-center gap-1.5 bg-brand-red text-white text-xs font-bold py-2 rounded-xl hover:bg-brand-red-dark active:scale-95 transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed mt-0.5"
         >
-          <ShoppingCart size={15} />
+          <ShoppingCart size={13} />
           {product.inStock ? "Add to Cart" : "Unavailable"}
         </button>
       </div>
