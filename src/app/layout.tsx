@@ -3,26 +3,30 @@ import "./globals.css";
 import QueryProvider from "@/context/query/QueryProvider";
 import { CartProvider } from "@/context/cart/CartContext";
 import { WishlistProvider } from "@/context/wishlist/WishlistContext";
+import { AuthProvider } from "@/context/auth/AuthContext";
+import { LanguageProvider } from "@/context/language/LanguageContext";
 
 export const metadata: Metadata = {
-  title: "ToysWorld - The Best Toy Store",
+  title: "WORLDOFTOYS - The Best Toy Store",
   description:
     "Discover thousands of toys, games, and educational products for children of all ages.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="th">
       <body>
+        <LanguageProvider>
         <QueryProvider>
-          <CartProvider>
-            <WishlistProvider>{children}</WishlistProvider>
-          </CartProvider>
+          <AuthProvider>
+            <CartProvider>
+              <WishlistProvider>{children}</WishlistProvider>
+            </CartProvider>
+          </AuthProvider>
         </QueryProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

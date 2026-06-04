@@ -18,7 +18,7 @@ const FOOTER_LINKS = {
     { label: "FAQ", href: "/faq" },
     { label: "Contact Us", href: "/contact" },
   ],
-  "About ToysWorld": [
+  "About WORLDOFTOYS": [
     { label: "Our Story", href: "/about" },
     { label: "Careers", href: "/careers" },
     { label: "Press & Media", href: "/press" },
@@ -89,7 +89,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-400">
                 <Mail size={14} className="text-brand-red flex-shrink-0" />
-                <span>support@toysworld.com</span>
+                <span>support@WORLDOFTOYS.com</span>
               </div>
               <div className="flex items-start gap-2 text-sm text-gray-400">
                 <MapPin size={14} className="text-brand-red flex-shrink-0 mt-0.5" />
@@ -137,7 +137,7 @@ export default function Footer() {
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-gray-500">
-            &copy; {new Date().getFullYear()} ToysWorld, Inc. All rights
+            &copy; {new Date().getFullYear()} WORLDOFTOYS, Inc. All rights
             reserved.
           </p>
           <div className="flex gap-4">

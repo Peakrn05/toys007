@@ -77,7 +77,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Soft Rainbow Stacking Rings",
     price: 12.99,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop",
+      "https://www.junioredition.com/cdn/shop/products/PlanToys_SS18_Rainbow_Stacking_Rings_Toy.jpg?v=1542031634&width=1200",
     category: "Baby Toys",
     badge: "popular",
     rating: 4.9,
@@ -90,7 +90,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Baby Plush Teddy Bear 30cm",
     price: 19.99,
     image:
-      "https://images.unsplash.com/photo-1560265637-c726a318d39e?w=400&q=80&fit=crop",
+      "https://lovelybears.com.au/cdn/shop/files/Clove30cm_1024x1024.jpg?v=1704684649",
     category: "Plush Toys",
     badge: "popular",
     rating: 4.8,
@@ -104,7 +104,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 14.99,
     originalPrice: 19.99,
     image:
-      "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=400&q=80&fit=crop",
+      "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/6d1d2f3569af4f4ab1cb52ee3b044591~tplv-o3syd03w52-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=e1be8f53&idc=my2&from=2378011839",
     category: "Baby Toys",
     badge: "sale",
     rating: 4.7,
@@ -117,7 +117,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Baby Activity Gym & Play Mat",
     price: 39.99,
     image:
-      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&q=80&fit=crop",
+      "https://infantino.com/cdn/shop/products/216-339_P1_1_grande.jpg?v=1532027252",
     category: "Baby Toys",
     badge: "new",
     rating: 4.8,
@@ -130,7 +130,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Musical Crib Mobile Stars",
     price: 29.99,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop",
+      "https://cdn02.pinkoi.com/product/aaDcPPMC/0/1/640x530.jpg",
     category: "Musical",
     badge: "new",
     rating: 4.6,
@@ -155,7 +155,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Soft Fabric Sensory Activity Book",
     price: 9.99,
     image:
-      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/61swbNPdtxL._AC_UF894,1000_QL80_DpWeblab_.jpg",
     category: "Baby Toys",
     rating: 4.5,
     reviewCount: 654,
@@ -168,7 +168,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 11.99,
     originalPrice: 16.99,
     image:
-      "https://images.unsplash.com/photo-1560265637-c726a318d39e?w=400&q=80&fit=crop",
+      "https://i.ebayimg.com/images/g/R-UAAeSwBvJpcIH3/s-l400.jpg",
     category: "Baby Toys",
     badge: "sale",
     rating: 4.6,
@@ -181,7 +181,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Giraffe Rattle & Teether Toy",
     price: 8.99,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/719qxclGLtL._AC_UF894,1000_QL80_.jpg",
     category: "Baby Toys",
     rating: 4.7,
     reviewCount: 1104,
@@ -193,7 +193,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Classic Pull-Along Wooden Duck",
     price: 16.99,
     image:
-      "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=400&q=80&fit=crop",
+      "https://babygifts.ie/cdn/shop/products/Classic-World-Pull-Along-Ducks1_600x.jpg?v=1632873579",
     category: "Wooden Toys",
     badge: "popular",
     rating: 4.8,
@@ -207,7 +207,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 34.99,
     originalPrice: 44.99,
     image:
-      "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/71mLqJaFcNL.jpg",
     category: "Musical",
     badge: "sale",
     rating: 4.7,
@@ -220,7 +220,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Soft Silicone Stacking Cups 6pcs",
     price: 7.99,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop",
+      "https://i.ebayimg.com/images/g/6aQAAOSwsAJifPeR/s-l400.jpg",
     category: "Baby Toys",
     rating: 4.5,
     reviewCount: 289,
@@ -236,7 +236,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 79.99,
     originalPrice: 99.99,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop",
+      "https://www.abcthebaby.com/wp-content/uploads/2023/05/E3177A-Deluxe-Kitchen-Playset-with-Fan-Fryer.jpg",
     category: "Dolls",
     badge: "sale",
     rating: 4.8,
@@ -249,7 +249,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Washable Finger Paint Set 12 Colors",
     price: 14.99,
     image:
-      "https://images.unsplash.com/photo-1461702057336-969e35b85f07?w=400&q=80&fit=crop",
+      "https://i5.walmartimages.com/seo/12-Color-Washable-Finger-Paint-Set-Kids-Funny-Fingers-Painting-Art-Drawing-Supplies-for-Painting-DIY-Crafts-Gifts-Early-Learning_c23b9d75-0b47-49fa-b9d7-cc49cfdf4a98.68dca311dbbdc4cc527d5e8722be8d1e.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
     category: "Arts & Crafts",
     rating: 4.6,
     reviewCount: 892,
@@ -261,7 +261,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Princess Fairy Dress-Up Kit",
     price: 24.99,
     image:
-      "https://images.unsplash.com/photo-1618842676088-c4d48a6a7571?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/61lVD3WvR2L._AC_UY1100_.jpg",
     category: "Dress Up",
     badge: "popular",
     rating: 4.7,
@@ -274,7 +274,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Wooden Train Track Set 40pcs",
     price: 44.99,
     image:
-      "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=400&q=80&fit=crop",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDzCbjR2JQQvGQ161Zu5h8zwKT1ETNLez5RA&s",
     category: "Wooden Toys",
     badge: "popular",
     rating: 4.9,
@@ -287,7 +287,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Memory Matching Card Game",
     price: 12.99,
     image:
-      "https://images.unsplash.com/photo-1592150621744-aca64f48394a?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/81tfbZExDbL._AC_UF894,1000_QL80_.jpg",
     category: "Board Games",
     rating: 4.5,
     reviewCount: 743,
@@ -300,7 +300,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 29.99,
     originalPrice: 39.99,
     image:
-      "https://images.unsplash.com/photo-1461702057336-969e35b85f07?w=400&q=80&fit=crop",
+      "https://mycreativebox.com/cdn/shop/files/product_1_1200x.png?v=1779150764",
     category: "Arts & Crafts",
     badge: "sale",
     rating: 4.7,
@@ -313,7 +313,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "24-Piece Foam Floor Puzzle Animals",
     price: 17.99,
     image:
-      "https://images.unsplash.com/photo-1611117775350-ac3950990985?w=400&q=80&fit=crop",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfxOxjO9Y-NhLgI6vidrzScF9_Atl6kxOfEw&s",
     category: "Puzzles",
     badge: "new",
     rating: 4.6,
@@ -327,7 +327,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 54.99,
     originalPrice: 69.99,
     image:
-      "https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=400&q=80&fit=crop",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUZfahrEEZJtQr5qLR1AcpetchoXBfA0CPcA&s",
     category: "Outdoor",
     badge: "sale",
     rating: 4.8,
@@ -340,7 +340,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Jumbo Bubble Gun & Solution Set",
     price: 9.99,
     image:
-      "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=400&q=80&fit=crop",
+      "https://www.toysrus.co.th/dw/image/v2/BDGJ_PRD/on/demandware.static/-/Sites-master-catalog-toysrus/default/dw6ef91680/9/9/1/3/9913c0fd44c28d0d0eba107b5665a67ac93bb637_936761_i1.jpg?sw=394&sh=394&q=75",
     category: "Outdoor",
     rating: 4.4,
     reviewCount: 567,
@@ -352,7 +352,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Multi-Level Toy Vehicle Garage",
     price: 39.99,
     image:
-      "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400&q=80&fit=crop",
+      "https://mentari.toys/cdn/shop/products/multi-level-garage-with-lift-mt7912-866972.jpg?v=1710167545",
     category: "Vehicles",
     badge: "popular",
     rating: 4.7,
@@ -365,7 +365,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Doctor & Nurse Role-Play Kit",
     price: 19.99,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/91DPROnI1bL._AC_UF894,1000_QL80_.jpg",
     category: "Dolls",
     rating: 4.5,
     reviewCount: 489,
@@ -377,7 +377,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Dinosaur World Figurine 12-Pack",
     price: 22.99,
     image:
-      "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=400&q=80&fit=crop",
+      "https://i5.walmartimages.com/seo/Pack-of-12-Ja-Ru-Dino-World-Dinosaurs-1-ea_bff9e38e-7db8-4cf6-87de-b27048bad902.45a1eccf0ff7ded68917616ebe06fa10.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
     category: "Action Figures",
     badge: "popular",
     rating: 4.8,
@@ -390,7 +390,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Classic Farm Animals Playset",
     price: 34.99,
     image:
-      "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&q=80&fit=crop",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWAkunudNJCyIOiwO_j00_axs_rE9TSEF_pA&s",
     category: "Dolls",
     rating: 4.6,
     reviewCount: 349,
@@ -403,7 +403,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 44.99,
     originalPrice: 59.99,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop",
+      "https://i5.walmartimages.com/seo/Donner-Kids-Size-Drums-Sets-14-5-Piece-Complete-Drum-Kit-for-Child-Beginners-Percussion-Musical-Toy-Metallic-Blue_a4cf7b13-ac30-4566-be6d-e9dbb889a64a.4effa0564b3d41a0ee47ede406bd16be.jpeg",
     category: "Musical",
     badge: "sale",
     rating: 4.7,
@@ -413,10 +413,10 @@ export const ALL_PRODUCTS: Product[] = [
   },
   {
     id: "p27",
-    name: "Pretend Store Cash Register",
+    name: "Store Cash Register",
     price: 27.99,
     image:
-      "https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/811KsYDquwL.jpg",
     category: "Dolls",
     rating: 4.5,
     reviewCount: 398,
@@ -431,7 +431,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "LEGO Classic Creative Brick Box",
     price: 49.99,
     image:
-      "https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80&fit=crop",
+      "https://www.toysrus.co.th/dw/image/v2/BDGJ_PRD/on/demandware.static/-/Sites-master-catalog-toysrus/default/dw8bf469cc/3/6/8/7/3687efdb541a79457b9d1d42d939eb88a03cbe93_49110_i1.jpg?sw=500&sh=500&q=75",
     category: "Building Blocks",
     badge: "popular",
     rating: 4.9,
@@ -445,7 +445,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 39.99,
     originalPrice: 59.99,
     image:
-      "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400&q=80&fit=crop",
+      "https://shop.makerfire.com/cdn/shop/files/Turboracingsportscarred1.jpg?v=1741926475",
     category: "Remote Control",
     badge: "sale",
     rating: 4.6,
@@ -458,7 +458,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Science Explorer Lab Kit Pro",
     price: 34.99,
     image:
-      "https://images.unsplash.com/photo-1532094349884-543559fee4b6?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/61kvAJIAPtL._AC_UF1000,1000_QL80_.jpg",
     category: "STEM & Science",
     badge: "new",
     rating: 4.7,
@@ -471,7 +471,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Monopoly Junior Family Edition",
     price: 24.99,
     image:
-      "https://images.unsplash.com/photo-1592150621744-aca64f48394a?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/81DPZQ6tQYL.jpg",
     category: "Board Games",
     rating: 4.5,
     reviewCount: 2134,
@@ -484,7 +484,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 129.99,
     originalPrice: 159.99,
     image:
-      "https://images.unsplash.com/photo-1534787238916-9ba6764efd4f?w=400&q=80&fit=crop",
+      "https://contents.mediadecathlon.com/p2642766/k$f1a421e42b5d2bddeb9d67824013203b/20-expl-500-orange-cnfr-btwin-8874418.jpg?f=768x0&format=auto",
     category: "Outdoor",
     badge: "sale",
     rating: 4.7,
@@ -497,7 +497,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Magnetic Tile Building Set 100pcs",
     price: 54.99,
     image:
-      "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/51Isiza6ghL._AC_US1000_.jpg",
     category: "Building Blocks",
     badge: "new",
     rating: 4.8,
@@ -510,7 +510,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Premium Watercolor Art Studio Set",
     price: 27.99,
     image:
-      "https://images.unsplash.com/photo-1461702057336-969e35b85f07?w=400&q=80&fit=crop",
+      "https://ph-live-01.slatic.net/p/7e0424cf29cff6318594c458b1dbc7ec.jpg",
     category: "Arts & Crafts",
     rating: 4.6,
     reviewCount: 567,
@@ -522,7 +522,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "RC Stunt Helicopter 2.4GHz",
     price: 44.99,
     image:
-      "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/51lX6Vc-KVL._AC_UF894,1000_QL80_.jpg",
     category: "Remote Control",
     badge: "new",
     rating: 4.5,
@@ -536,7 +536,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 19.99,
     originalPrice: 29.99,
     image:
-      "https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/71GCacgNxNL.jpg",
     category: "Remote Control",
     badge: "sale",
     rating: 4.4,
@@ -549,7 +549,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Solar System Planetarium Kit",
     price: 39.99,
     image:
-      "https://images.unsplash.com/photo-1532094349884-543559fee4b6?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/81OXH1JBQpS._AC_UF894,1000_QL80_.jpg",
     category: "STEM & Science",
     badge: "new",
     rating: 4.8,
@@ -559,10 +559,10 @@ export const ALL_PRODUCTS: Product[] = [
   },
   {
     id: "p38",
-    name: "Coding Robot for Kids Scratch",
+    name: "Coding Robot for Kid",
     price: 69.99,
     image:
-      "https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=400&q=80&fit=crop",
+      "https://down-th.img.susercontent.com/file/sg-11134201-7req2-m8snrpakt4lt3d",
     category: "STEM & Science",
     badge: "new",
     rating: 4.7,
@@ -575,7 +575,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "Table Tennis Ping-Pong Set",
     price: 34.99,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80&fit=crop",
+      "https://i5.walmartimages.com/seo/PRO-SPIN-All-in-One-Portable-Ping-Pong-Set-with-Retractable-Net-High-Performance-Ping-Pong-Paddles-2-Player-Set-Indoor-Outdoor-Game_007c7c8f-df35-4a3f-b5a0-4a6d821921e7.4982b03cb6d7fd57db1e39d0dcbf1c5c.jpeg",
     category: "Outdoor",
     rating: 4.5,
     reviewCount: 413,
@@ -587,7 +587,7 @@ export const ALL_PRODUCTS: Product[] = [
     name: "500-Piece Nature Jigsaw Puzzle",
     price: 21.99,
     image:
-      "https://images.unsplash.com/photo-1611117775350-ac3950990985?w=400&q=80&fit=crop",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6wuKlULvqmG_q-qsNtOAcglmv09Qv_SOSrw&s",
     category: "Puzzles",
     rating: 4.6,
     reviewCount: 889,
@@ -600,7 +600,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 18.99,
     originalPrice: 26.99,
     image:
-      "https://images.unsplash.com/photo-1532094349884-543559fee4b6?w=400&q=80&fit=crop",
+      "https://m.media-amazon.com/images/I/91v8uM8z-8L.jpg",
     category: "STEM & Science",
     badge: "sale",
     rating: 4.7,
@@ -614,7 +614,7 @@ export const ALL_PRODUCTS: Product[] = [
     price: 22.99,
     originalPrice: 34.99,
     image:
-      "https://images.unsplash.com/photo-1592150621744-aca64f48394a?w=400&q=80&fit=crop",
+      "https://www.gamesworld.com.au/wp-content/uploads/2025/11/6c877bd996c487022e1f5ecd68cff126c45640ca.jpg",
     category: "Board Games",
     badge: "sale",
     rating: 4.8,

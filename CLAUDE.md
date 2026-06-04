@@ -1,4 +1,4 @@
-# ToysWorld — Project Guide
+# WORLDOFTOYS — Project Guide
 
 ## Stack
 
