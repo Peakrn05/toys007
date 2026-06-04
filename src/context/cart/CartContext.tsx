@@ -12,6 +12,7 @@ const CartContext = createContext<CartContextValue | null>(null);
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartCount, setCartCount] = useState(0);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const addToCart = (_productId: string) => {
     setCartCount((prev) => prev + 1);
   };

@@ -9,7 +9,7 @@ export const HERO_BANNERS: HeroBanner[] = [
     subtitle: "Discover outdoor toys and water games for endless summer fun",
     cta: "Shop Now",
     ctaLink: "/outdoor",
-    bgColor: "#003DA5",
+    gradient: "linear-gradient(135deg, #1565C0 0%, #AA00FF 100%)",
     image: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800",
   },
   {
@@ -18,7 +18,7 @@ export const HERO_BANNERS: HeroBanner[] = [
     subtitle: "The hottest toys of the season — be the first to get them",
     cta: "View New Arrivals",
     ctaLink: "/new-arrivals",
-    bgColor: "#E4002B",
+    gradient: "linear-gradient(135deg, #FF1744 0%, #FF6D00 100%)",
     image: "https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=800",
   },
 ];
@@ -44,7 +44,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     name: "Super Hero Action Set - Deluxe Edition",
     price: 29.99,
     originalPrice: 44.99,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRviD_Yql9u-wkB5J_S5b2mui3IW_G9GLk73Q&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRviD_Yql9u-wkB5J_S5b2mui3IW_G9GLk73Q&s",
     category: "Action Figures",
     badge: "sale",
     rating: 4.8,
@@ -55,7 +56,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     id: "p2",
     name: "Classic Building Blocks 500 Piece Set",
     price: 49.99,
-    image: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400",
+    image:
+      "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=400",
     category: "Building Blocks",
     badge: "popular",
     rating: 4.9,
@@ -67,7 +69,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     name: "Remote Control Racing Car Pro",
     price: 39.99,
     originalPrice: 59.99,
-    image: "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400",
+    image:
+      "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400",
     category: "Remote Control",
     badge: "sale",
     rating: 4.6,
@@ -78,7 +81,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     id: "p4",
     name: "Science Explorer Lab Kit",
     price: 34.99,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOVvInoGAt28oZzuEOsGUBRACpPXWHAzV03w&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOVvInoGAt28oZzuEOsGUBRACpPXWHAzV03w&s",
     category: "STEM & Science",
     badge: "new",
     rating: 4.7,
@@ -89,7 +93,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     id: "p5",
     name: "Family Strategy Board Game",
     price: 24.99,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtdn6jKPY2y92zCclZhZfzH4EAmhTmdyIokQ&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtdn6jKPY2y92zCclZhZfzH4EAmhTmdyIokQ&s",
     category: "Board Games",
     rating: 4.5,
     reviewCount: 567,
@@ -100,7 +105,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     name: "Princess Doll Royal Castle Playset",
     price: 64.99,
     originalPrice: 79.99,
-    image: "https://m.media-amazon.com/images/I/71ekP9r9onL._AC_UF894,1000_QL80_.jpg",
+    image:
+      "https://m.media-amazon.com/images/I/71ekP9r9onL._AC_UF894,1000_QL80_.jpg",
     category: "Dolls",
     badge: "sale",
     rating: 4.8,
@@ -111,7 +117,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     id: "p7",
     name: "Giant 200-Piece Floor Puzzle",
     price: 19.99,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpgOcfC_DdSRuKsXnXpKmTMMii81-MvSHu3w&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpgOcfC_DdSRuKsXnXpKmTMMii81-MvSHu3w&s",
     category: "Puzzles",
     badge: "new",
     rating: 4.4,
@@ -123,7 +130,8 @@ export const FEATURED_PRODUCTS: Product[] = [
     name: "Outdoor Adventure Bike 20-inch",
     price: 129.99,
     originalPrice: 159.99,
-    image: "https://www.dysonbikes.com.au/assets/full/102720.jpg?20250313155239",
+    image:
+      "https://www.dysonbikes.com.au/assets/full/102720.jpg?20250313155239",
     category: "Outdoor",
     badge: "sale",
     rating: 4.7,
@@ -131,6 +139,18 @@ export const FEATURED_PRODUCTS: Product[] = [
     inStock: false,
   },
 ];
+
+// Products excluded from each age filter (by product ID).
+// "0-2": no Building Blocks, Science Kit, or Outdoor Bike (too advanced / physical risk)
+// "3-5": no Building Blocks (small pieces)
+export const AGE_EXCLUSIONS: Record<string, string[]> = {
+  all: [],
+  "0-2": ["p2", "p4", "p8"],
+  "3-5": ["p2"],
+  "6-8": [],
+  "9-12": [],
+  "12+": [],
+};
 
 export const AGE_FILTERS = [
   { label: "All Ages", value: "all" },

@@ -24,6 +24,6 @@ export interface HeroBanner {
   subtitle: string;
   cta: string;
   ctaLink: string;
-  bgColor: string;
+  gradient: string;
   image: string;
 }

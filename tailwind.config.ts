@@ -10,16 +10,24 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          red: "#E4002B",
-          blue: "#003DA5",
-          yellow: "#FFD700",
-          "red-dark": "#B8001F",
-          "blue-dark": "#002D80",
-          "red-light": "#FF1A45",
+          red: "#FF1744",
+          blue: "#1565C0",
+          yellow: "#FFD600",
+          orange: "#FF6D00",
+          pink: "#F50057",
+          green: "#00C853",
+          purple: "#AA00FF",
+          "red-dark": "#D50000",
+          "blue-dark": "#0D47A1",
+          "red-light": "#FF616F",
         },
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
+      },
+      borderRadius: {
+        "3xl": "1.5rem",
+        "4xl": "2rem",
       },
     },
   },
