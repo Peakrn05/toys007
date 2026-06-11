@@ -24,6 +24,7 @@ export default function CartContent() {
   const [card, setCard] = useState({ number: "", name: "", expiry: "", cvv: "" });
   const [done, setDone] = useState(false);
   const [pointsEarned, setPointsEarned] = useState(0);
+  const [cardError, setCardError] = useState("");
 
   const resolved = cartItems
     .map((item) => {
@@ -42,6 +43,13 @@ export default function CartContent() {
       router.push("/checkout-login");
       return;
     }
+    if (pay === "card") {
+      if (!card.number.trim() || !card.name.trim() || !card.expiry.trim() || !card.cvv.trim()) {
+        setCardError("Please fill in all card details.");
+        return;
+      }
+    }
+    setCardError("");
     // Earn 1 loyalty point per $1 spent, plus tier bonus
     const tierBonus = getLoyaltyTier(loyaltyPoints).bonusRate;
     const earned = Math.round(total * (1 + tierBonus));
@@ -369,6 +377,10 @@ export default function CartContent() {
                     <span className="text-brand-blue font-semibold">orders@toysworld.com</span>
                   </p>
                 </div>
+              )}
+
+              {cardError && (
+                <p className="text-xs text-brand-red font-bold text-center mt-3">{cardError}</p>
               )}
 
               {/* Place order button */}
