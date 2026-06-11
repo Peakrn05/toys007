@@ -44,8 +44,12 @@ export default function CartContent() {
       return;
     }
     if (pay === "card") {
-      if (!card.number.trim() || !card.name.trim() || !card.expiry.trim() || !card.cvv.trim()) {
+      if (!card.name.trim() || !card.expiry.trim() || !card.cvv.trim()) {
         setCardError("Please fill in all card details.");
+        return;
+      }
+      if (card.number.replace(/\s/g, "").length !== 16) {
+        setCardError("Card number must be 16 digits.");
         return;
       }
     }
