@@ -114,6 +114,11 @@ export default function ProfileContent() {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
   const [sessions, setSessions] = useState(MOCK_SESSIONS);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [isEditingInfo, setIsEditingInfo] = useState(false);
+  const [name, setName] = useState("Alex Johnson");
+  const [email, setEmail] = useState("alex.johnson@worldoftoys.com");
+  const [phone, setPhone] = useState(MOCK_BASE.phone);
+  const [address, setAddress] = useState(MOCK_BASE.address);
 
   // Single call — destructure everything needed
   const { wishlistCount, isWishlisted } = useWishlist();
@@ -128,10 +133,10 @@ export default function ProfileContent() {
   const displayUser = {
     name: authUser && !authUser.isGuest
       ? `${authUser.firstName} ${authUser.lastName}`.trim()
-      : "Alex Johnson",
+      : name,
     email: authUser && !authUser.isGuest
       ? authUser.email
-      : "alex.johnson@worldoftoys.com",
+      : email,
     ...MOCK_BASE,
     loyaltyPoints: authUser ? loyaltyPoints : MOCK_BASE.loyaltyPoints,
     verified: authUser?.verified ?? true,
@@ -236,24 +241,35 @@ export default function ProfileContent() {
             <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-black text-gray-900">Personal Information</h2>
-                <button className="flex items-center gap-1.5 text-xs font-bold text-brand-blue hover:underline">
-                  <Edit3 size={13} /> Edit
+                <button
+                  onClick={() => setIsEditingInfo((v) => !v)}
+                  className="flex items-center gap-1.5 text-xs font-bold text-brand-blue hover:underline"
+                >
+                  <Edit3 size={13} /> {isEditingInfo ? "Save" : "Edit"}
                 </button>
               </div>
               <div className="space-y-4">
                 {[
-                  { icon: User,   label: "Full Name", value: displayUser.name },
-                  { icon: Mail,   label: "Email",     value: displayUser.email },
-                  { icon: Phone,  label: "Phone",     value: displayUser.phone },
-                  { icon: MapPin, label: "Address",   value: displayUser.address },
-                ].map(({ icon: Icon, label, value }) => (
+                  { icon: User,   label: "Full Name", value: displayUser.name, editable: true, set: setName },
+                  { icon: Mail,   label: "Email",     value: displayUser.email, editable: true, set: setEmail },
+                  { icon: Phone,  label: "Phone",     value: phone, editable: true, set: setPhone },
+                  { icon: MapPin, label: "Address",   value: address, editable: true, set: setAddress },
+                ].map(({ icon: Icon, label, value, editable, set }) => (
                   <div key={label} className="flex items-start gap-3">
                     <div className="w-9 h-9 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0">
                       <Icon size={16} className="text-gray-500" />
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-xs text-gray-400 font-medium">{label}</p>
-                      <p className="text-sm font-bold text-gray-800">{value}</p>
+                      {isEditingInfo && editable && set ? (
+                        <input
+                          value={value}
+                          onChange={(e) => set(e.target.value)}
+                          className="text-sm font-bold text-gray-800 border-b-2 border-gray-200 focus:outline-none focus:border-brand-blue w-full"
+                        />
+                      ) : (
+                        <p className="text-sm font-bold text-gray-800">{value}</p>
+                      )}
                     </div>
                   </div>
                 ))}
