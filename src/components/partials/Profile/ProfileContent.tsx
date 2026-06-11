@@ -10,6 +10,7 @@ import {
 import { useWishlist } from "@/context/wishlist/WishlistContext";
 import { useAuth } from "@/context/auth/AuthContext";
 import { getLoyaltyTier, getNextTier } from "@/lib/loyalty";
+import { Switch, Card, CardContent, Button } from "@heroui/react";
 import { ALL_PRODUCTS } from "@/components/partials/Home/Home.config";
 import { ProductCard } from "@/components/common/ProductCard";
 
@@ -94,6 +95,12 @@ export default function ProfileContent() {
   const [tab, setTab] = useState<Tab>("profile");
   const [modal, setModal] = useState<ModalType>(null);
   const [activeOrder, setActiveOrder] = useState<typeof MOCK_ORDERS[0] | null>(null);
+  const [notifPrefs, setNotifPrefs] = useState({
+    "Order updates": true,
+    "Promotions & deals": true,
+    "New arrivals": false,
+    "Price drops": true,
+  });
 
   // Single call — destructure everything needed
   const { wishlistCount, isWishlisted } = useWishlist();
@@ -244,7 +251,7 @@ export default function ProfileContent() {
               {/* Loyalty card */}
               <div
                 className="rounded-2xl p-6 text-white relative overflow-hidden"
-                style={{ background: "linear-gradient(135deg, #FF1744 0%, #FF6D00 100%)" }}
+                style={{ background: currentTier.gradient }}
               >
                 <p className="text-xs font-bold uppercase tracking-widest text-white/70">Loyalty Program</p>
                 <p className="text-3xl font-black mt-2">
@@ -359,50 +366,64 @@ export default function ProfileContent() {
         {/* ── Settings tab ── */}
         {tab === "settings" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <Card className="rounded-2xl border border-gray-100 shadow-sm">
+              <CardContent className="p-6">
               <h2 className="font-black text-gray-900 mb-4">Notifications</h2>
               <div className="space-y-3">
                 {[
-                  { label: "Order updates",      sub: "Shipping & delivery alerts",          on: true },
-                  { label: "Promotions & deals", sub: "Weekly offers and discounts",         on: true },
-                  { label: "New arrivals",        sub: "Products matching your interests",   on: false },
-                  { label: "Price drops",         sub: "Wishlist item price changes",        on: true },
-                ].map(({ label, sub, on }) => (
-                  <div key={label} className="flex items-center justify-between py-2">
-                    <div>
-                      <p className="text-sm font-bold text-gray-800">{label}</p>
-                      <p className="text-xs text-gray-400">{sub}</p>
+                  { label: "Order updates" as const,      sub: "Shipping & delivery alerts" },
+                  { label: "Promotions & deals" as const, sub: "Weekly offers and discounts" },
+                  { label: "New arrivals" as const,        sub: "Products matching your interests" },
+                  { label: "Price drops" as const,         sub: "Wishlist item price changes" },
+                ].map(({ label, sub }) => {
+                  const on = notifPrefs[label];
+                  return (
+                    <div key={label} className="flex items-center justify-between py-2">
+                      <div>
+                        <p className="text-sm font-bold text-gray-800">{label}</p>
+                        <p className="text-xs text-gray-400">{sub}</p>
+                      </div>
+                      <Switch
+                        isSelected={on}
+                        onChange={(v: boolean) => setNotifPrefs((prev) => ({ ...prev, [label]: v }))}
+                        aria-label={label}
+                      />
                     </div>
-                    <div className={`w-11 h-6 rounded-full relative cursor-pointer transition-colors ${on ? "bg-brand-green" : "bg-gray-200"}`}>
-                      <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all ${on ? "right-1" : "left-1"}`} />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <Card className="rounded-2xl border border-gray-100 shadow-sm">
+              <CardContent className="p-6">
               <h2 className="font-black text-gray-900 mb-4">Security</h2>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {[
                   { label: "Change Password",  sub: "Last changed 3 months ago",          icon: ShieldCheck },
                   { label: "Two-Factor Auth",  sub: "Enabled via Authenticator App",      icon: ShieldCheck },
                   { label: "Active Sessions",  sub: "1 active session on Windows",        icon: User },
                   { label: "Delete Account",   sub: "Permanently remove your account",    icon: User },
                 ].map(({ label, sub, icon: Icon }) => (
-                  <button key={label} className="w-full flex items-center gap-3 py-2.5 hover:bg-gray-50 rounded-xl px-2 transition-colors text-left">
+                  <Button
+                    key={label}
+                    onPress={() => alert(`${label}: coming soon`)}
+                    variant="ghost"
+                    className="w-full flex items-center gap-3 py-2.5 h-auto justify-start rounded-xl px-2 text-left"
+                  >
                     <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
                       <Icon size={14} className="text-gray-500" />
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 text-left">
                       <p className="text-sm font-bold text-gray-800">{label}</p>
-                      <p className="text-xs text-gray-400">{sub}</p>
+                      <p className="text-xs text-gray-400 font-normal">{sub}</p>
                     </div>
                     <ChevronRight size={13} className="text-gray-300" />
-                  </button>
+                  </Button>
                 ))}
               </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 
