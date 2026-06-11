@@ -11,13 +11,14 @@ import {
 import { useCart } from "@/context/cart/CartContext";
 import { useAuth } from "@/context/auth/AuthContext";
 import { ALL_PRODUCTS } from "@/components/partials/Home/Home.config";
+import { getLoyaltyTier } from "@/lib/loyalty";
 
 type PayMethod = "card" | "paypal" | "bank";
 
 export default function CartContent() {
   const router = useRouter();
   const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
-  const { isLoggedIn, user, addLoyaltyPoints } = useAuth();
+  const { isLoggedIn, user, loyaltyPoints, addLoyaltyPoints, addOrder } = useAuth();
 
   const [pay, setPay] = useState<PayMethod>("card");
   const [card, setCard] = useState({ number: "", name: "", expiry: "", cvv: "" });
@@ -41,10 +42,19 @@ export default function CartContent() {
       router.push("/checkout-login");
       return;
     }
-    // Earn 1 loyalty point per $1 spent
-    const earned = Math.round(total);
+    // Earn 1 loyalty point per $1 spent, plus tier bonus
+    const tierBonus = getLoyaltyTier(loyaltyPoints).bonusRate;
+    const earned = Math.round(total * (1 + tierBonus));
     addLoyaltyPoints(earned);
     setPointsEarned(earned);
+    addOrder({
+      id: `WOT-${Date.now()}`,
+      date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+      total,
+      status: "Processing",
+      items: resolved.map((p) => p.name),
+      statusColor: "text-amber-600 bg-amber-50",
+    });
     clearCart();
     setDone(true);
   };

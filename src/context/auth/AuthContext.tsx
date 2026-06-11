@@ -11,16 +11,27 @@ export interface AuthUser {
   verified?: boolean;
 }
 
+export interface PlacedOrder {
+  id: string;
+  date: string;
+  total: number;
+  status: string;
+  items: string[];
+  statusColor: string;
+}
+
 interface AuthContextValue {
   user: AuthUser | null;
   isLoggedIn: boolean;
   loyaltyPoints: number;
+  orders: PlacedOrder[];
   login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   register: (firstName: string, lastName: string, email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   loginWithSocial: (provider: "facebook" | "google" | "line") => Promise<void>;
   loginAsGuest: () => void;
   logout: () => void;
   addLoyaltyPoints: (points: number) => void;
+  addOrder: (order: PlacedOrder) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -31,6 +42,7 @@ const WELCOME_BONUS_POINTS = 150;
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loyaltyPoints, setLoyaltyPoints] = useState(0);
+  const [orders, setOrders] = useState<PlacedOrder[]>([]);
 
   const login = async (email: string, password: string): Promise<{ ok: boolean; error?: string }> => {
     await new Promise((r) => setTimeout(r, 700));
@@ -84,8 +96,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const addLoyaltyPoints = (points: number) =>
     setLoyaltyPoints((prev) => prev + points);
 
+  const addOrder = (order: PlacedOrder) =>
+    setOrders((prev) => [order, ...prev]);
+
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: user !== null, loyaltyPoints, login, register, loginWithSocial, loginAsGuest, logout, addLoyaltyPoints }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: user !== null, loyaltyPoints, orders, login, register, loginWithSocial, loginAsGuest, logout, addLoyaltyPoints, addOrder }}>
       {children}
     </AuthContext.Provider>
   );

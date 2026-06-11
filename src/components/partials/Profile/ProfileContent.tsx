@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useWishlist } from "@/context/wishlist/WishlistContext";
 import { useAuth } from "@/context/auth/AuthContext";
+import { getLoyaltyTier, getNextTier } from "@/lib/loyalty";
 import { ALL_PRODUCTS } from "@/components/partials/Home/Home.config";
 import { ProductCard } from "@/components/common/ProductCard";
 
@@ -19,8 +20,8 @@ const MOCK_BASE = {
   memberSince: "March 2023",
   loyaltyPoints: 2450,
   address: "123 Maple Street, Los Angeles, CA 90001",
-  tier: "Gold Member",
 };
+
 
 const MOCK_ORDERS = [
   {
@@ -96,7 +97,10 @@ export default function ProfileContent() {
 
   // Single call — destructure everything needed
   const { wishlistCount, isWishlisted } = useWishlist();
-  const { user: authUser, loyaltyPoints } = useAuth();
+  const { user: authUser, loyaltyPoints, orders } = useAuth();
+
+  // Newly placed orders show first, followed by the mock order history
+  const allOrders = [...orders, ...MOCK_ORDERS];
 
   const wishlistedProducts = ALL_PRODUCTS.filter((p) => isWishlisted(p.id));
 
@@ -109,9 +113,12 @@ export default function ProfileContent() {
       ? authUser.email
       : "alex.johnson@worldoftoys.com",
     ...MOCK_BASE,
-    loyaltyPoints: authUser && !authUser.isGuest ? loyaltyPoints : MOCK_BASE.loyaltyPoints,
+    loyaltyPoints: authUser ? loyaltyPoints : MOCK_BASE.loyaltyPoints,
     verified: authUser?.verified ?? true,
   };
+
+  const currentTier = getLoyaltyTier(displayUser.loyaltyPoints);
+  const nextTier = getNextTier(displayUser.loyaltyPoints);
 
   const openOrderDetails = (order: typeof MOCK_ORDERS[0]) => {
     setActiveOrder(order);
@@ -120,7 +127,7 @@ export default function ProfileContent() {
 
   const TABS: { id: Tab; label: string; icon: React.ElementType; count?: number }[] = [
     { id: "profile",  label: "My Profile",   icon: User },
-    { id: "orders",   label: "Orders",        icon: Package, count: MOCK_ORDERS.length },
+    { id: "orders",   label: "Orders",        icon: Package, count: allOrders.length },
     { id: "wishlist", label: "Wishlist",       icon: Heart,   count: wishlistCount },
     { id: "settings", label: "Settings",       icon: Settings },
   ];
@@ -163,7 +170,7 @@ export default function ProfileContent() {
 
             <div className="flex gap-6 text-center">
               <div>
-                <p className="text-2xl font-black">{MOCK_ORDERS.length}</p>
+                <p className="text-2xl font-black">{allOrders.length}</p>
                 <p className="text-xs text-white/70">Orders</p>
               </div>
               <div>
@@ -244,19 +251,26 @@ export default function ProfileContent() {
                   {displayUser.loyaltyPoints.toLocaleString()}
                   <span className="text-base font-semibold ml-1 text-white/70">pts</span>
                 </p>
-                <p className="text-sm text-white/80 mt-1">{displayUser.tier}</p>
-                <div className="mt-4 bg-white/20 rounded-xl p-3">
-                  <div className="flex justify-between text-xs text-white/80 mb-1.5">
-                    <span>Progress to Platinum</span>
-                    <span>{displayUser.loyaltyPoints.toLocaleString()} / 5,000</span>
+                <p className="text-sm text-white/80 mt-1">{currentTier.name}</p>
+                {currentTier.bonusRate > 0 && (
+                  <p className="text-xs text-white/70 mt-0.5">
+                    +{currentTier.bonusRate * 100}% bonus points on every order
+                  </p>
+                )}
+                {nextTier && (
+                  <div className="mt-4 bg-white/20 rounded-xl p-3">
+                    <div className="flex justify-between text-xs text-white/80 mb-1.5">
+                      <span>Progress to {nextTier.name.replace(" Member", "")}</span>
+                      <span>{displayUser.loyaltyPoints.toLocaleString()} / {nextTier.min.toLocaleString()}</span>
+                    </div>
+                    <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-white rounded-full"
+                        style={{ width: `${Math.min((displayUser.loyaltyPoints / nextTier.min) * 100, 100)}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-white rounded-full"
-                      style={{ width: `${Math.min((displayUser.loyaltyPoints / 5000) * 100, 100)}%` }}
-                    />
-                  </div>
-                </div>
+                )}
                 <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full" />
               </div>
 
@@ -286,7 +300,7 @@ export default function ProfileContent() {
         {/* ── Orders tab ── */}
         {tab === "orders" && (
           <div className="space-y-4">
-            {MOCK_ORDERS.map((order) => (
+            {allOrders.map((order) => (
               <div key={order.id} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
