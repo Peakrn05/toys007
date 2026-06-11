@@ -17,11 +17,12 @@ type PayMethod = "card" | "paypal" | "bank";
 export default function CartContent() {
   const router = useRouter();
   const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn, user, addLoyaltyPoints } = useAuth();
 
   const [pay, setPay] = useState<PayMethod>("card");
   const [card, setCard] = useState({ number: "", name: "", expiry: "", cvv: "" });
   const [done, setDone] = useState(false);
+  const [pointsEarned, setPointsEarned] = useState(0);
 
   const resolved = cartItems
     .map((item) => {
@@ -40,6 +41,10 @@ export default function CartContent() {
       router.push("/checkout-login");
       return;
     }
+    // Earn 1 loyalty point per $1 spent
+    const earned = Math.round(total);
+    addLoyaltyPoints(earned);
+    setPointsEarned(earned);
     clearCart();
     setDone(true);
   };
@@ -59,8 +64,16 @@ export default function CartContent() {
           <div className="bg-gray-100 rounded-xl px-4 py-3 text-sm text-gray-700 font-medium">
             Order #TW-{Date.now().toString().slice(-6)}
           </div>
+          {pointsEarned > 0 && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800 font-bold">
+              +{pointsEarned.toLocaleString()} loyalty points earned!
+            </div>
+          )}
           <Link href="/" className="btn-primary block text-center">
             Continue Shopping
+          </Link>
+          <Link href="/profile" className="block text-center text-sm font-bold text-brand-blue hover:underline">
+            View My Account
           </Link>
         </div>
       </main>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   ArrowLeft, Package, Heart, Settings, User,
   MapPin, Phone, Mail, Star, ChevronRight, Edit3, ShieldCheck,
+  X, Truck, CheckCircle2, Circle, Mail as MailIcon, Smartphone,
 } from "lucide-react";
 import { useWishlist } from "@/context/wishlist/WishlistContext";
 import { useAuth } from "@/context/auth/AuthContext";
@@ -56,14 +57,46 @@ const MOCK_ORDERS = [
   },
 ];
 
+const MOCK_REVIEWS = [
+  {
+    product: "LEGO Classic Creative Brick Box",
+    rating: 5,
+    date: "Dec 6, 2024",
+    comment: "My kids absolutely love this set! Tons of pieces and the color variety sparks so much creativity.",
+  },
+  {
+    product: "RC Turbo Racing Car Pro",
+    rating: 4,
+    date: "Nov 18, 2024",
+    comment: "Fast and fun, though the battery life could be a bit longer. Great value overall.",
+  },
+  {
+    product: "Science Explorer Lab Kit Pro",
+    rating: 5,
+    date: "Sep 22, 2024",
+    comment: "Excellent educational toy — clear instructions and the experiments actually work!",
+  },
+];
+
+const TRACKING_STEPS = [
+  { label: "Order Placed", date: "Dec 1, 2024 · 9:14 AM", done: true },
+  { label: "Processing", date: "Dec 1, 2024 · 2:30 PM", done: true },
+  { label: "Shipped", date: "Dec 2, 2024 · 11:05 AM", done: true },
+  { label: "Out for Delivery", date: "Dec 4, 2024 · 8:40 AM", done: true },
+  { label: "Delivered", date: "Dec 4, 2024 · 3:52 PM", done: true },
+];
+
 type Tab = "profile" | "orders" | "wishlist" | "settings";
+type ModalType = "track" | "reviews" | "verified" | "orderDetails" | null;
 
 export default function ProfileContent() {
   const [tab, setTab] = useState<Tab>("profile");
+  const [modal, setModal] = useState<ModalType>(null);
+  const [activeOrder, setActiveOrder] = useState<typeof MOCK_ORDERS[0] | null>(null);
 
   // Single call — destructure everything needed
   const { wishlistCount, isWishlisted } = useWishlist();
-  const { user: authUser } = useAuth();
+  const { user: authUser, loyaltyPoints } = useAuth();
 
   const wishlistedProducts = ALL_PRODUCTS.filter((p) => isWishlisted(p.id));
 
@@ -76,6 +109,13 @@ export default function ProfileContent() {
       ? authUser.email
       : "alex.johnson@worldoftoys.com",
     ...MOCK_BASE,
+    loyaltyPoints: authUser && !authUser.isGuest ? loyaltyPoints : MOCK_BASE.loyaltyPoints,
+    verified: authUser?.verified ?? true,
+  };
+
+  const openOrderDetails = (order: typeof MOCK_ORDERS[0]) => {
+    setActiveOrder(order);
+    setModal("orderDetails");
   };
 
   const TABS: { id: Tab; label: string; icon: React.ElementType; count?: number }[] = [
@@ -223,11 +263,11 @@ export default function ProfileContent() {
               {/* Quick links */}
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm divide-y divide-gray-50">
                 {[
-                  { icon: Package,    label: "Track Order",      sub: "Check your shipment status" },
-                  { icon: Star,       label: "Reviews",           sub: "Products you have reviewed" },
-                  { icon: ShieldCheck,label: "Verified Account", sub: "ID verified successfully" },
-                ].map(({ icon: Icon, label, sub }) => (
-                  <button key={label} className="w-full flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors text-left">
+                  { icon: Package,    label: "Track Order",      sub: "Check your shipment status",   action: () => { setActiveOrder(MOCK_ORDERS[0]); setModal("track"); } },
+                  { icon: Star,       label: "Reviews",           sub: "Products you have reviewed",   action: () => setModal("reviews") },
+                  { icon: ShieldCheck,label: "Verified Account", sub: "ID verified successfully",     action: () => setModal("verified") },
+                ].map(({ icon: Icon, label, sub, action }) => (
+                  <button key={label} onClick={action} className="w-full flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors text-left">
                     <div className="w-9 h-9 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0">
                       <Icon size={16} className="text-gray-500" />
                     </div>
@@ -270,7 +310,7 @@ export default function ProfileContent() {
                     Items: {order.items.join(" · ")}
                   </p>
                 </div>
-                <button className="mt-3 text-xs font-bold text-brand-blue hover:underline flex items-center gap-1">
+                <button onClick={() => openOrderDetails(order)} className="mt-3 text-xs font-bold text-brand-blue hover:underline flex items-center gap-1">
                   View details <ChevronRight size={12} />
                 </button>
               </div>
@@ -353,6 +393,173 @@ export default function ProfileContent() {
         )}
 
       </div>
+
+      {/* ── Modals ── */}
+      {modal && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setModal(null)}
+        >
+          <div
+            className="bg-white rounded-2xl max-w-md w-full max-h-[85vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Track order */}
+            {modal === "track" && activeOrder && (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="font-black text-gray-900 text-lg">Track Order</h3>
+                  <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-700">
+                    <X size={18} />
+                  </button>
+                </div>
+                <p className="text-xs text-gray-400 font-medium mb-5">#{activeOrder.id}</p>
+                <div className="space-y-0">
+                  {TRACKING_STEPS.map((step, i) => (
+                    <div key={step.label} className="flex gap-3">
+                      <div className="flex flex-col items-center">
+                        {step.done ? (
+                          <CheckCircle2 size={20} className="text-brand-green" />
+                        ) : (
+                          <Circle size={20} className="text-gray-300" />
+                        )}
+                        {i < TRACKING_STEPS.length - 1 && (
+                          <div className={`w-0.5 flex-1 min-h-[28px] ${step.done ? "bg-brand-green" : "bg-gray-200"}`} />
+                        )}
+                      </div>
+                      <div className="pb-6">
+                        <p className="text-sm font-bold text-gray-800">{step.label}</p>
+                        <p className="text-xs text-gray-400">{step.date}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-blue-50 rounded-xl p-3 flex items-center gap-3">
+                  <Truck size={18} className="text-brand-blue flex-shrink-0" />
+                  <p className="text-xs text-blue-800 font-medium">
+                    Delivered to {MOCK_BASE.address}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Reviews */}
+            {modal === "reviews" && (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="font-black text-gray-900 text-lg">My Reviews</h3>
+                  <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-700">
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  {MOCK_REVIEWS.map((r) => (
+                    <div key={r.product} className="border border-gray-100 rounded-xl p-4">
+                      <p className="text-sm font-bold text-gray-800">{r.product}</p>
+                      <div className="flex items-center gap-1 my-1.5">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star
+                            key={i}
+                            size={13}
+                            className={i < r.rating ? "text-brand-yellow fill-brand-yellow" : "text-gray-200 fill-gray-200"}
+                          />
+                        ))}
+                        <span className="text-xs text-gray-400 ml-1">{r.date}</span>
+                      </div>
+                      <p className="text-xs text-gray-500 leading-relaxed">{r.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Verified account */}
+            {modal === "verified" && (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="font-black text-gray-900 text-lg">Account Verification</h3>
+                  <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-700">
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    { icon: MailIcon,    label: "Email Address",    value: displayUser.email,   verified: true },
+                    { icon: Smartphone, label: "Phone Number",     value: displayUser.phone,    verified: true },
+                    { icon: ShieldCheck,label: "Government ID",    value: "Verified on Mar 15, 2023", verified: displayUser.verified },
+                  ].map(({ icon: Icon, label, value, verified }) => (
+                    <div key={label} className="flex items-center gap-3 border border-gray-100 rounded-xl p-3">
+                      <div className="w-9 h-9 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Icon size={16} className="text-gray-500" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-bold text-gray-800">{label}</p>
+                        <p className="text-xs text-gray-400">{value}</p>
+                      </div>
+                      {verified ? (
+                        <span className="flex items-center gap-1 text-xs font-bold text-green-600 bg-green-50 rounded-full px-2 py-1">
+                          <CheckCircle2 size={12} /> Verified
+                        </span>
+                      ) : (
+                        <span className="text-xs font-bold text-amber-600 bg-amber-50 rounded-full px-2 py-1">
+                          Pending
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Order details */}
+            {modal === "orderDetails" && activeOrder && (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="font-black text-gray-900 text-lg">Order Details</h3>
+                  <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-700">
+                    <X size={18} />
+                  </button>
+                </div>
+                <p className="text-xs text-gray-400 font-medium mb-5">
+                  #{activeOrder.id} · {activeOrder.date}
+                </p>
+
+                <div className="mb-4">
+                  <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">Items</p>
+                  <ul className="space-y-1.5">
+                    {activeOrder.items.map((item) => (
+                      <li key={item} className="text-sm text-gray-700 flex items-start gap-2">
+                        <Package size={14} className="text-gray-400 mt-0.5 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mb-4">
+                  <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">Shipping Address</p>
+                  <p className="text-sm text-gray-700 flex items-start gap-2">
+                    <MapPin size={14} className="text-gray-400 mt-0.5 flex-shrink-0" />
+                    {MOCK_BASE.address}
+                  </p>
+                </div>
+
+                <div className="mb-4">
+                  <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">Payment Method</p>
+                  <p className="text-sm text-gray-700">Visa •••• 4242</p>
+                </div>
+
+                <div className="border-t border-gray-100 pt-3 flex items-center justify-between">
+                  <span className={`text-xs font-bold px-3 py-1 rounded-full ${activeOrder.statusColor}`}>
+                    {activeOrder.status}
+                  </span>
+                  <p className="text-base font-black text-gray-900">${activeOrder.total.toFixed(2)}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </main>
   );
 }
