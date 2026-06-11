@@ -6,6 +6,7 @@ import {
   ArrowLeft, Package, Heart, Settings, User,
   MapPin, Phone, Mail, Star, ChevronRight, Edit3, ShieldCheck,
   X, Truck, CheckCircle2, Circle, Mail as MailIcon, Smartphone,
+  Laptop, LogOut, AlertTriangle, KeyRound, QrCode,
 } from "lucide-react";
 import { useWishlist } from "@/context/wishlist/WishlistContext";
 import { useAuth } from "@/context/auth/AuthContext";
@@ -88,7 +89,14 @@ const TRACKING_STEPS = [
 ];
 
 type Tab = "profile" | "orders" | "wishlist" | "settings";
-type ModalType = "track" | "reviews" | "verified" | "orderDetails" | null;
+type ModalType = "track" | "reviews" | "verified" | "orderDetails"
+  | "changePassword" | "twoFactor" | "sessions" | "deleteAccount" | null;
+
+const MOCK_SESSIONS = [
+  { id: "s1", device: "Windows · Chrome", location: "Bangkok, Thailand", lastActive: "Active now", current: true },
+  { id: "s2", device: "iPhone 15 · Safari", location: "Chiang Mai, Thailand", lastActive: "2 hours ago", current: false },
+  { id: "s3", device: "iPad Air · Safari", location: "Tokyo, Japan", lastActive: "3 days ago", current: false },
+];
 
 export default function ProfileContent() {
   const [tab, setTab] = useState<Tab>("profile");
@@ -100,6 +108,12 @@ export default function ProfileContent() {
     "New arrivals": false,
     "Price drops": true,
   });
+  const [passwordForm, setPasswordForm] = useState({ current: "", next: "", confirm: "" });
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSaved, setPasswordSaved] = useState(false);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
+  const [sessions, setSessions] = useState(MOCK_SESSIONS);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
 
   // Single call — destructure everything needed
   const { wishlistCount, isWishlisted } = useWishlist();
@@ -399,14 +413,14 @@ export default function ProfileContent() {
               <h2 className="font-black text-gray-900 mb-4">Security</h2>
               <div className="space-y-3">
                 {[
-                  { label: "Change Password",  sub: "Last changed 3 months ago",          icon: ShieldCheck },
-                  { label: "Two-Factor Auth",  sub: "Enabled via Authenticator App",      icon: ShieldCheck },
-                  { label: "Active Sessions",  sub: "1 active session on Windows",        icon: User },
-                  { label: "Delete Account",   sub: "Permanently remove your account",    icon: User },
-                ].map(({ label, sub, icon: Icon }) => (
+                  { label: "Change Password",  sub: "Last changed 3 months ago",          icon: KeyRound,    modal: "changePassword" as const },
+                  { label: "Two-Factor Auth",  sub: twoFactorEnabled ? "Enabled via Authenticator App" : "Disabled", icon: ShieldCheck, modal: "twoFactor" as const },
+                  { label: "Active Sessions",  sub: `${sessions.length} active session${sessions.length !== 1 ? "s" : ""}`, icon: Laptop, modal: "sessions" as const },
+                  { label: "Delete Account",   sub: "Permanently remove your account",    icon: AlertTriangle, modal: "deleteAccount" as const },
+                ].map(({ label, sub, icon: Icon, modal: m }) => (
                   <button
                     key={label}
-                    onClick={() => alert(`${label}: coming soon`)}
+                    onClick={() => { setPasswordError(""); setPasswordSaved(false); setDeleteConfirmText(""); setModal(m); }}
                     className="w-full flex items-center gap-3 py-2.5 hover:bg-gray-50 rounded-xl px-2 transition-colors text-left"
                   >
                     <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
@@ -587,6 +601,172 @@ export default function ProfileContent() {
                   </span>
                   <p className="text-base font-black text-gray-900">${activeOrder.total.toFixed(2)}</p>
                 </div>
+              </div>
+            )}
+
+            {/* Change password */}
+            {modal === "changePassword" && (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="font-black text-gray-900 text-lg">Change Password</h3>
+                  <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-700">
+                    <X size={18} />
+                  </button>
+                </div>
+                {passwordSaved ? (
+                  <div className="text-center py-6">
+                    <CheckCircle2 size={36} className="text-brand-green mx-auto mb-2" />
+                    <p className="text-sm font-bold text-gray-800">Password updated successfully</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {([
+                      { key: "current", label: "Current password" },
+                      { key: "next", label: "New password" },
+                      { key: "confirm", label: "Confirm new password" },
+                    ] as const).map(({ key, label }) => (
+                      <div key={key}>
+                        <label className="text-xs font-bold text-gray-600 mb-1 block">{label}</label>
+                        <input
+                          type="password"
+                          value={passwordForm[key]}
+                          onChange={(e) => setPasswordForm((p) => ({ ...p, [key]: e.target.value }))}
+                          className="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-brand-blue"
+                        />
+                      </div>
+                    ))}
+                    {passwordError && <p className="text-xs text-brand-red font-bold">{passwordError}</p>}
+                    <button
+                      onClick={() => {
+                        if (!passwordForm.current || !passwordForm.next) {
+                          setPasswordError("Please fill in all fields.");
+                        } else if (passwordForm.next.length < 6) {
+                          setPasswordError("New password must be at least 6 characters.");
+                        } else if (passwordForm.next !== passwordForm.confirm) {
+                          setPasswordError("New passwords do not match.");
+                        } else {
+                          setPasswordError("");
+                          setPasswordSaved(true);
+                          setPasswordForm({ current: "", next: "", confirm: "" });
+                        }
+                      }}
+                      className="w-full bg-brand-red text-white font-black py-3 rounded-xl hover:bg-brand-red-dark transition-all text-sm"
+                    >
+                      Update Password
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Two-factor auth */}
+            {modal === "twoFactor" && (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="font-black text-gray-900 text-lg">Two-Factor Auth</h3>
+                  <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-700">
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between border border-gray-100 rounded-xl p-4 mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-gray-50 rounded-xl flex items-center justify-center">
+                      <ShieldCheck size={16} className="text-gray-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-gray-800">Authenticator App</p>
+                      <p className="text-xs text-gray-400">{twoFactorEnabled ? "Enabled" : "Disabled"}</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    aria-pressed={twoFactorEnabled}
+                    onClick={() => setTwoFactorEnabled((v) => !v)}
+                    className={`w-11 h-6 rounded-full relative cursor-pointer transition-colors ${twoFactorEnabled ? "bg-brand-green" : "bg-gray-200"}`}
+                  >
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-all ${twoFactorEnabled ? "right-1" : "left-1"}`} />
+                  </button>
+                </div>
+                {twoFactorEnabled && (
+                  <div className="bg-gray-50 rounded-xl p-4 text-center">
+                    <QrCode size={64} className="mx-auto text-gray-400 mb-2" />
+                    <p className="text-xs text-gray-500">
+                      Scan this QR code with your authenticator app to link your account.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Active sessions */}
+            {modal === "sessions" && (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="font-black text-gray-900 text-lg">Active Sessions</h3>
+                  <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-700">
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  {sessions.map((s) => (
+                    <div key={s.id} className="flex items-center gap-3 border border-gray-100 rounded-xl p-3">
+                      <div className="w-9 h-9 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Laptop size={16} className="text-gray-500" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-bold text-gray-800">
+                          {s.device}{s.current && <span className="ml-2 text-[10px] font-bold text-green-600 bg-green-50 rounded-full px-2 py-0.5">This device</span>}
+                        </p>
+                        <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
+                          <MapPin size={11} /> {s.location} · {s.lastActive}
+                        </p>
+                      </div>
+                      {!s.current && (
+                        <button
+                          onClick={() => setSessions((prev) => prev.filter((x) => x.id !== s.id))}
+                          className="text-gray-400 hover:text-brand-red transition-colors"
+                          aria-label={`Sign out ${s.device}`}
+                        >
+                          <LogOut size={16} />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Delete account */}
+            {modal === "deleteAccount" && (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="font-black text-gray-900 text-lg">Delete Account</h3>
+                  <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-700">
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className="bg-red-50 border border-red-100 rounded-xl p-3 my-4 flex gap-3">
+                  <AlertTriangle size={18} className="text-brand-red flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-red-700 leading-relaxed">
+                    This will permanently delete your account, orders, and loyalty points. This action cannot be undone.
+                  </p>
+                </div>
+                <label className="text-xs font-bold text-gray-600 mb-1 block">
+                  Type <span className="font-mono">DELETE</span> to confirm
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  className="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red mb-4"
+                />
+                <button
+                  disabled={deleteConfirmText !== "DELETE"}
+                  onClick={() => setModal(null)}
+                  className="w-full bg-brand-red text-white font-black py-3 rounded-xl hover:bg-brand-red-dark transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Permanently Delete Account
+                </button>
               </div>
             )}
           </div>
