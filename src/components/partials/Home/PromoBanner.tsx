@@ -25,7 +25,7 @@ export default function PromoBanner() {
             >
               Shop Games
             </Link>
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 text-white/8 text-9xl font-black select-none pointer-events-none">
+            <div className="absolute right-6 top-1/2 -translate-y-1/2 text-white/15 text-9xl font-black select-none pointer-events-none">
               40%
             </div>
           </div>
@@ -49,7 +49,7 @@ export default function PromoBanner() {
             >
               Shop Outdoor
             </Link>
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 text-white/8 text-9xl font-black select-none pointer-events-none">
+            <div className="absolute right-6 top-1/2 -translate-y-1/2 text-white/15 text-9xl font-black select-none pointer-events-none">
               $9
             </div>
           </div>
