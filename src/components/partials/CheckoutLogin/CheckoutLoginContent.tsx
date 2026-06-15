@@ -394,7 +394,7 @@ export default function CheckoutLoginContent() {
             <div className="flex-1 border-t border-gray-100" />
           </div>
           <button
-            onClick={() => { loginAsGuest(); redirect(); }}
+            onClick={async () => { await loginAsGuest(); redirect(); }}
             className="w-full py-2.5 rounded-lg border-2 border-gray-200 text-gray-500 text-sm font-bold hover:border-gray-400 hover:text-gray-700 active:scale-[0.98] transition-all"
           >
             {t.continueAsGuest}

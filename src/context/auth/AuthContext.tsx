@@ -1,13 +1,17 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { loginApi, registerApi, socialLoginApi, guestLoginApi } from "@/lib/api/api-main";
+import { apiClient } from "@/lib/api/client";
+
 
 export interface AuthUser {
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
   isGuest?: boolean;
-  provider?: "email" | "facebook" | "google" | "line";
+  provider?: string;
   verified?: boolean;
 }
 
@@ -28,7 +32,7 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   register: (firstName: string, lastName: string, email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
   loginWithSocial: (provider: "facebook" | "google" | "line") => Promise<void>;
-  loginAsGuest: () => void;
+  loginAsGuest: () => Promise<void>;
   logout: () => void;
   addLoyaltyPoints: (points: number) => void;
   addOrder: (order: PlacedOrder) => void;
@@ -36,61 +40,132 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-// New accounts start with a welcome bonus; this grows as orders are placed.
-const WELCOME_BONUS_POINTS = 150;
+const TOKEN_KEY = "wot-token";
+const USER_KEY = "wot-user";
+
+function saveAuth(token: string, user: AuthUser) {
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+}
+
+function clearAuth() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+}
+
+function loadAuth(): { token: string; user: AuthUser } | null {
+  if (typeof window === "undefined") return null;
+  const token = localStorage.getItem(TOKEN_KEY);
+  const raw = localStorage.getItem(USER_KEY);
+  if (!token || !raw) return null;
+  try {
+    return { token, user: JSON.parse(raw) };
+  } catch {
+    return null;
+  }
+}
+
+function toAuthUser(apiUser: Record<string, unknown>): AuthUser {
+  return {
+    id: apiUser.id as string | undefined,
+    firstName: (apiUser.firstName as string) || "",
+    lastName: (apiUser.lastName as string) || "",
+    email: (apiUser.email as string) || "",
+    isGuest: (apiUser.isGuest as boolean) || false,
+    provider: (apiUser.provider as string) || "email",
+  };
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loyaltyPoints, setLoyaltyPoints] = useState(0);
   const [orders, setOrders] = useState<PlacedOrder[]>([]);
 
+  const setAuthHeader = useCallback((token: string | null) => {
+    if (token) {
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      delete apiClient.defaults.headers.common["Authorization"];
+    }
+  }, []);
+
+  useEffect(() => {
+    const stored = loadAuth();
+    if (stored) {
+      setUser(stored.user);
+      setAuthHeader(stored.token);
+    }
+  }, [setAuthHeader]);
+
   const login = async (email: string, password: string): Promise<{ ok: boolean; error?: string }> => {
-    await new Promise((r) => setTimeout(r, 700));
-    if (!email.includes("@")) return { ok: false, error: "Invalid email address." };
-    if (password.length < 6) return { ok: false, error: "Password must be at least 6 characters." };
-    const name = email.split("@")[0].replace(/[._]/g, " ");
-    const [first, ...rest] = name.split(" ");
-    setUser({
-      firstName: first ? first.charAt(0).toUpperCase() + first.slice(1) : "User",
-      lastName: rest.join(" ") || "",
-      email,
-      provider: "email",
-      verified: true,
-    });
-    setLoyaltyPoints(WELCOME_BONUS_POINTS);
-    return { ok: true };
+    try {
+      const { data } = await loginApi({ email, password });
+      const authUser = toAuthUser(data.user);
+      setUser(authUser);
+      setAuthHeader(data.token);
+      saveAuth(data.token, authUser);
+      return { ok: true };
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+        "Login failed.";
+      return { ok: false, error: msg };
+    }
   };
 
   const register = async (
     firstName: string, lastName: string, email: string, password: string
   ): Promise<{ ok: boolean; error?: string }> => {
-    await new Promise((r) => setTimeout(r, 800));
-    if (!email.includes("@")) return { ok: false, error: "Invalid email address." };
-    if (password.length < 6) return { ok: false, error: "Password must be at least 6 characters." };
-    setUser({ firstName, lastName, email, provider: "email", verified: false });
-    setLoyaltyPoints(WELCOME_BONUS_POINTS);
-    return { ok: true };
+    try {
+      const { data } = await registerApi({ firstName, lastName, email, password });
+      const authUser = toAuthUser(data.user);
+      setUser(authUser);
+      setAuthHeader(data.token);
+      saveAuth(data.token, authUser);
+      return { ok: true };
+    } catch (err: unknown) {
+      const msg =
+        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+        "Registration failed.";
+      return { ok: false, error: msg };
+    }
   };
 
   const loginWithSocial = async (provider: "facebook" | "google" | "line") => {
-    await new Promise((r) => setTimeout(r, 600));
-    const mock: Record<typeof provider, AuthUser> = {
-      facebook: { firstName: "Facebook", lastName: "User", email: "user@facebook.com", provider: "facebook", verified: true },
-      google:   { firstName: "Google",   lastName: "User", email: "user@gmail.com",    provider: "google", verified: true },
-      line:     { firstName: "LINE",     lastName: "User", email: "user@line.me",      provider: "line", verified: true },
-    };
-    setUser(mock[provider]);
-    setLoyaltyPoints(WELCOME_BONUS_POINTS);
+    try {
+      const { data } = await socialLoginApi({
+        provider,
+        providerId: `${provider}_${Date.now()}`,
+        firstName: provider.charAt(0).toUpperCase() + provider.slice(1),
+        lastName: "User",
+        email: `user@${provider === "google" ? "gmail" : provider}.com`,
+      });
+      const authUser = toAuthUser(data.user);
+      setUser(authUser);
+      setAuthHeader(data.token);
+      saveAuth(data.token, authUser);
+    } catch {
+      // Social login failed silently — UI already shows loading state
+    }
   };
 
-  const loginAsGuest = () => {
-    setUser({ firstName: "Guest", lastName: "", email: "", isGuest: true, verified: false });
-    setLoyaltyPoints(0);
+  const loginAsGuest = async () => {
+    try {
+      const { data } = await guestLoginApi();
+      const authUser = toAuthUser(data.user);
+      setUser(authUser);
+      setAuthHeader(data.token);
+      saveAuth(data.token, authUser);
+    } catch {
+      setUser({ firstName: "Guest", lastName: "", email: "", isGuest: true });
+    }
   };
 
   const logout = () => {
     setUser(null);
     setLoyaltyPoints(0);
+    setAuthHeader(null);
+    clearAuth();
   };
 
   const addLoyaltyPoints = (points: number) =>

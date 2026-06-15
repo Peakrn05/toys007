@@ -54,3 +54,6 @@ export const socialLoginApi = (body: {
   email: string;
 }) =>
   apiClient.post<{ user: Record<string, unknown>; token: string }>("/auth/social", body);
+
+export const guestLoginApi = () =>
+  apiClient.post<{ user: Record<string, unknown>; token: string }>("/auth/guest");
